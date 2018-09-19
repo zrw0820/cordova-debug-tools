@@ -2,4 +2,6 @@
 <resources>
     <!--fragment container-->
     <item name="fragment_container_id" type="id"/>
+    <item name="content" type="id"/>
+    <item name="menu_action" type="id"/>
 </resources>
