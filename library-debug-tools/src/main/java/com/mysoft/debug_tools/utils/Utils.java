@@ -3,11 +3,7 @@ package com.mysoft.debug_tools.utils;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.Signature;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -154,39 +150,6 @@ public class Utils {
             e.printStackTrace();
         }
         return pairs;
-    }
-
-    public static boolean checkPermission(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(context)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                intent.setData(Uri.parse("package:" + context.getPackageName()));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static long lastCheckTime;
-    private static float[] lastXyz = new float[3];
-
-    public static boolean checkIfShake(float x, float y, float z) {
-        long currentTime = System.currentTimeMillis();
-        long diffTime = currentTime - lastCheckTime;
-        if (diffTime < 100) {
-            return false;
-        }
-        lastCheckTime = currentTime;
-        float deltaX = x - lastXyz[0];
-        float deltaY = y - lastXyz[1];
-        float deltaZ = z - lastXyz[2];
-        lastXyz[0] = x;
-        lastXyz[1] = y;
-        lastXyz[2] = z;
-        int delta = (int) (Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) / diffTime * 10000);
-        return delta > 1000;
     }
 
     public static void copyText(Context context, CharSequence label, CharSequence text) {
